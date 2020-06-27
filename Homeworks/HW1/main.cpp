@@ -17,6 +17,7 @@ void your_rgba_to_greyscale(const uchar4 * const h_rgbaImage,
 #include "HW1.cpp"
 
 int main(int argc, char **argv) {
+  std::cout << "Starting HW1" << std::endl;
   uchar4        *h_rgbaImage, *d_rgbaImage;
   unsigned char *h_greyImage, *d_greyImage;
 
