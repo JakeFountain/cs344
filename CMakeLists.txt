@@ -8,6 +8,7 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(cs344)
 
+set(OpenCV_DIR "C:\\opencv\\build\\")
 find_package(OpenCV REQUIRED)
 find_package(CUDA REQUIRED)
 
@@ -21,14 +22,13 @@ if(CUDA_FOUND)
   # to make sure more people can easily run class code without knowing 
   # about this compiler argument
   set(CUDA_NVCC_FLAGS "
-  -ccbin /usr/bin/clang; 
-  -gencode;arch=compute_30,code=sm_30;  
-  -gencode;arch=compute_35,code=sm_35;
-  -gencode;arch=compute_35,code=compute_35;
-  -gencode;arch=compute_20,code=sm_20; 
-  -gencode;arch=compute_11,code=sm_11; 
-  -gencode;arch=compute_12,code=sm_12;
-  -gencode;arch=compute_13,code=sm_13;")
+  -gencode;arch=compute_60,code=sm_60; ") 
+  # -gencode;arch=compute_35,code=sm_35;
+  # -gencode;arch=compute_35,code=compute_35;")
+  # -gencode;arch=compute_20,code=sm_20; 
+  # "-gencode;arch=compute_11,code=sm_11; 
+  # -gencode;arch=compute_12,code=sm_12;
+  # -gencode;arch=compute_13,code=sm_13;")
 
   # add -Wextra compiler flag for gcc compilations
   if (UNIX)
@@ -39,12 +39,12 @@ if(CUDA_FOUND)
   # add debugging to CUDA NVCC flags.  For NVidia's NSight tools.
   set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG} "-G")
 
-  add_subdirectory (HW1)
-  add_subdirectory (HW2)
-  add_subdirectory (HW3)
-  add_subdirectory (HW4)
-  add_subdirectory (HW5)
-  add_subdirectory (HW6)
+  add_subdirectory ("Homeworks/HW1")
+  add_subdirectory ("Homeworks/HW2")
+  add_subdirectory ("Homeworks/HW3")
+  add_subdirectory ("Homeworks/HW4")
+  add_subdirectory ("Homeworks/HW5")
+  add_subdirectory ("Homeworks/HW6")
 else(CUDA_FOUND)
   message("CUDA is not installed on this system.")
 endif()
