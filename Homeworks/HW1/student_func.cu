@@ -56,6 +56,8 @@ void rgba_to_greyscale(const uchar4* const rgbaImage,
   int loc = pixelx + pixely * numCols;
   uchar4 color = rgbaImage[loc];
   greyImage[loc] = color.x*0.299f + color.y*0.587f + color.z*0.114f;
+  // greyImage[loc] = (color.x + color.y + color.z) / 3.0f;
+
 }
 
 void your_rgba_to_greyscale(const uchar4 * const h_rgbaImage, uchar4 * const d_rgbaImage,
@@ -64,11 +66,14 @@ void your_rgba_to_greyscale(const uchar4 * const h_rgbaImage, uchar4 * const d_r
   //You must fill in the correct sizes for the blockSize and gridSize
   //currently only one block with one thread is being launched
   const size_t blockWidth = 16;
-  const dim3 blockSize(blockWidth, blockWidth, 1);  //TODO
+  const size_t blockHeight = 16;
+  const dim3 blockSize(blockWidth, blockHeight, 1);  //TODO
   //Overdraw
-  const dim3 gridSize(numCols / blockWidth+1, numRows / blockWidth+1, 1);  //TODO
+  const dim3 gridSize(numCols / blockWidth+1, numRows / blockHeight+1, 1);  //TODO
   std::cout << " blocksize = " << blockSize.x << ", " << blockSize.y << std::endl;
   std::cout << " gridsize  = " << gridSize.x << ", " << gridSize.y << std::endl;
+  std::cout << " image draw size = " << gridSize.x * blockSize.x << ", " << gridSize.y * blockSize.y << std::endl;
+  std::cout << " overdraw = " << 100 * (gridSize.x * blockSize.x * gridSize.y * blockSize.y - numRows * numCols) /  ((float)numRows * numCols) << "%" << std::endl;
   rgba_to_greyscale<<<gridSize, blockSize>>>(d_rgbaImage, d_greyImage, numRows, numCols);
   
   cudaDeviceSynchronize(); checkCudaErrors(cudaGetLastError());
